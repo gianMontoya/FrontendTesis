@@ -24,3 +24,7 @@ export const createOrUpdateCliente = (id, data) =>{
 export const getCliente = (id) =>{
   return clientesApi.get(`/${id}`)
 }
+
+export const deleteCliente = (id) =>{
+  return clientesApi.delete(`/${id}`);
+}
