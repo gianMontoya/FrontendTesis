@@ -16,6 +16,7 @@ export function ComprasPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [showModal, setShowModal] = useState(false)
   const [jsonData, setJsonData] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
   const itemsPerPage = 10; // Number of items per page
   const totalPages = Math.ceil(compras.length / itemsPerPage);
@@ -46,6 +47,7 @@ export function ComprasPage() {
   };
 
   const importarCompras = async () =>{
+    setIsLoading(true)
     let idOrdenActual = 0
     let arrayLineaOrdenCompra = []
 
@@ -70,7 +72,6 @@ export function ComprasPage() {
           }).toString().split('/').reverse().join('-'),
           fidUsuario: 1,
         }
-        console.log(orden)
         idOrdenActual = jsonData[i].A
         await createOrUpdateCompras(idOrdenActual,orden)
         let lineaOrdenCompra = {
@@ -95,6 +96,19 @@ export function ComprasPage() {
     if (arrayLineaOrdenCompra.length>0){
       await createLineaOrdenCompra(arrayLineaOrdenCompra);
     }
+    setIsLoading(false)
+    setShowModal(false)
+
+    toast.success('Compras importadas correctamente',{
+      position: "top-right",
+      style: {
+        background:"#101010",
+        color: "#fff"
+      }
+    })
+
+    const data = await getAllCompras();
+    setCompras(data);
   }
 
   const  handleFileUpload = (event) => {
@@ -274,11 +288,14 @@ export function ComprasPage() {
           <div>
             <input className="mb-5" type="file" onChange={handleFileUpload}/>
           </div>
-          <div>
+          <div className="flex justify-between">
             <button className="bg-dark-purple p-2 rounded-lg text-white text-sm"
-                    onClick={importarCompras}>
+                    onClick={importarCompras}
+                    disabled={isLoading}
+            >
               Importar
             </button>
+            {isLoading && <img src="/src/assets/Cargando.gif" alt="/src/assets/Cargando.gif"/>}
           </div>
         </Modal>
       </div>

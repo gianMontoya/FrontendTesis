@@ -15,6 +15,8 @@ import {ClienteFormPage} from "./pages/Clientes/ClienteFormPage.jsx";
 import {CompraFormPage} from "./pages/Compras/CompraFormPage.jsx";
 import {VentasVisualizerPage} from "./pages/Ventas/VentasVisualizerPage.jsx";
 import {ComprasVisualizerPage} from "./pages/Compras/ComprasVisualizerPage.jsx";
+import {UsuariosPage} from "./pages/Usuarios/UsuariosPage.jsx";
+import {UsuarioFormPage} from "./pages/Usuarios/UsuariosFormPage.jsx";
 
 function App() {
   return(
@@ -55,9 +57,13 @@ function App() {
             <Route path="/insumo-create" element={<InsumoFormPage/>}/>
             <Route path="/insumo/:id" element={<InsumoFormPage/>}/>
 
+            {/*USUARIOS*/}
+            <Route path="/usuarios" element={<UsuariosPage/>}/>
+            <Route path="/usuario-create" element={<UsuarioFormPage/>}/>
+            <Route path="/usuario/:id" element={<UsuarioFormPage/>}/>
+
             {/*ESTIMACION*/}
             <Route path="/estimacion" element={<EstimacionPage/>}/>
-
 
             <Route
                 path="*"

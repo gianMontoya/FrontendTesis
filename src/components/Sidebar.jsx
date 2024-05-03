@@ -17,13 +17,15 @@ export function Sidebar() {
     { title: "Ventas", src: "venta", gap: false, link:"/ventas"},
     { gap: true},
     { title: "Estimación", src: "estimacion", gap: true, link:"/estimacion"},
+    { gap: true},
+    { title: "Usuarios", src: "usuario", gap: true, link:"/usuarios"},
   ];
   
   return (
       <div
         className={` ${
           open ? "w-60" : "w-20"
-        } bg-dark-purple vh-100 p-5 pt-8 relative duration-300 h-screen`}
+        } bg-dark-purple vh-100 p-4 pt-8 relative duration-300 h-screen`}
       >
         <img
           src="/src/assets/control.png"
@@ -56,14 +58,14 @@ export function Sidebar() {
           {Menus.map((Menu, index) => {
                 if (Menu.title == null) {
                   return (
-                      <div key = {index} className = {`flex rounded-md p-0 text-gray-300 text-sm items-center ${Menu.gap ? "mt-1" : "mt-1"}`}></div>
+                      <div key = {index} className = {`flex mt-0.5`}></div>
                   )
                 }else{
                   return(
-                    <NavLink 
+                    <NavLink
                         key = {index}
                         to = {Menu.link}
-                        className = {`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 ${Menu.gap ? "mt-9" : "mt-1"}`}
+                        className = {`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 ${Menu.gap ? "mt-8" : "mt-1"}`}
                     >
                         <img src={`/src/assets/${Menu.src}.png`} alt={`/src/assets/${Menu.src}.png`}/>
                         <span className={`${!open && "hidden"} origin-left duration-200 font-bold`}>
@@ -72,7 +74,7 @@ export function Sidebar() {
                     </NavLink>
                   )
                 }
-                
+
               }
             )}
         </ul>
@@ -85,7 +87,7 @@ export function Sidebar() {
             Cerrar Sesión
         </button>
 
-        
+
 
       </div>
 

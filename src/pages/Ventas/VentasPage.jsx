@@ -16,6 +16,7 @@ export function VentasPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [showModal, setShowModal] = useState(false)
   const [jsonData, setJsonData] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
   const itemsPerPage = 10; // Number of items per page
   const totalPages = Math.ceil(ventas.length / itemsPerPage);
@@ -46,6 +47,7 @@ export function VentasPage() {
   };
 
   const importarVentas = async () =>{
+    setIsLoading(true)
     let idOrdenActual = 0
     let arrayLineaOrdenVenta = []
 
@@ -105,6 +107,21 @@ export function VentasPage() {
     if (arrayLineaOrdenVenta.length>0){
       await createLineaOrdenVenta(arrayLineaOrdenVenta);
     }
+
+    setIsLoading(false)
+    setShowModal(false)
+
+    toast.success('Ventas importadas correctamente',{
+      position: "top-right",
+      style: {
+        background:"#101010",
+        color: "#fff"
+      }
+    })
+
+    const data = await getAllVentas();
+    setVentas(data);
+
   }
 
   const  handleFileUpload = (event) => {
@@ -273,11 +290,12 @@ export function VentasPage() {
           <div>
             <input className="mb-5" type="file" onChange={handleFileUpload}/>
           </div>
-          <div>
+          <div className="flex justify-between">
             <button className="bg-dark-purple p-2 rounded-lg text-white text-sm"
                     onClick={importarVentas}>
               Importar
             </button>
+            {isLoading && <img src="/src/assets/Cargando.gif" alt="/src/assets/Cargando.gif"/>}
           </div>
         </Modal>
       </div>

@@ -25,7 +25,6 @@ export function ComprasVisualizerPage(){
   useEffect(()=>{
     const loadCompra = async () => {
       const {data} = await getCompra(params.id)
-      console.log(data)
       setCompra(data)
       const dataLineas = await getLineaOrdenCompra(data.id)
       setLineasOrdenCompra(dataLineas.data)

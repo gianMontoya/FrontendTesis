@@ -1,20 +1,14 @@
-import { Sidebar } from '../../components/Sidebar.jsx'
-import {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
-import {getAllClientes} from "../../api/ClientesAPI.api.js";
+import {Sidebar} from '../../components/Sidebar.jsx'
+import {useEffect, useState} from "react"
+import {useNavigate} from "react-router-dom"
+import {getAllUsuarios} from "../../api/UsuariosAPI.api.js";
 
-export function ClientesPage() {
-  const [clientes, setClientes] = useState([])
-  const [currentPage, setCurrentPage] = useState(1);
-
+export function UsuariosPage() {
+  const [usuarios, setUsuarios] = useState([])
   const navigate = useNavigate()
   const itemsPerPage = 5; // Number of items per page
-  const totalPages = Math.ceil(clientes.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-
-  const currentItems = clientes.slice(startIndex, endIndex);
-
+  const totalPages = Math.ceil(usuarios.length / itemsPerPage);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const handleClick = (type) => {
     if (type === 'prev') {
@@ -24,15 +18,19 @@ export function ClientesPage() {
     }
   };
 
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+
+  const currentItems = usuarios.slice(startIndex, endIndex);
 
   useEffect(() => {
     async function loadTasks() {
-      return await getAllClientes();
+      return await getAllUsuarios();
     }
 
     const fetchData = async () => {
       const data = await loadTasks();
-      setClientes(data);
+      setUsuarios(data);
     };
 
     fetchData();
@@ -43,13 +41,13 @@ export function ClientesPage() {
         <Sidebar/>
         <div className="w-4/6 mx-auto">
           <div className="mt-10 mb-10 font-extrabold text-3xl">
-            Clientes
+            Usuarios
           </div>
           <div className="flex justify-end">
             <button className="bg-dark-purple text-white p-2 rounded-lg w-1/6"
                     onClick={
                       async () => {
-                        navigate("/cliente-create")
+                        navigate("/usuario-create")
                       }
                     }
             >
@@ -60,25 +58,27 @@ export function ClientesPage() {
             <thead className="bg-grat-50 border-b-2 border-gray-200">
             <tr>
               <th className='p-3 text-l font-semibold tracking-wide text-left'>ID</th>
-              <th className='p-3 text-l font-semibold tracking-wide text-left'>Cliente</th>
-              <th className='p-3 text-l font-semibold tracking-wide text-left'>Contacto</th>
+              <th className='p-3 text-l font-semibold tracking-wide text-left'>Nombre</th>
+              <th className='p-3 text-l font-semibold tracking-wide text-left'>Correo</th>
+              <th className='p-3 text-l font-semibold tracking-wide text-left'>Rol</th>
               <th className='p-3 text-l font-semibold tracking-wide text-left'>Estado</th>
-              <th className='p-3 text-l font-semibold tracking-wide text-left'>Acción</th>
+              <th className='p-3 text-l font-semibold tracking-wide text-center'>Acción</th>
             </tr>
             </thead>
             <tbody>
-            {currentItems.length > 0? (
-                    currentItems.map((cliente, index) => (
+            {currentItems.length > 0 ? (
+                    currentItems.map((usuario, index) => (
                         <tr key={index} className="bg-zinc-100 p-3  rounded-lg odd:bg-white even:bg-slate-50">
-                          <td className='p-3 text-gray-700'>{cliente.id}</td>
-                          <td className='p-3 text-gray-700'>{cliente.nombreCliente}</td>
-                          <td className='p-3 text-gray-700'>{cliente.nombreContacto + " - " + cliente.numeroContacto + " - "+ cliente.correoContacto}</td>
-                          <td className='p-3 text-gray-700'>{cliente.activo?"Activo":"Inactivo"}</td>
-                          <td className='p-2'>
+                          <td className='p-3 text-gray-700'>{usuario.id}</td>
+                          <td className='p-3 text-gray-700'>{usuario.nombres+ " "+ usuario.apellidoPaterno + " "+ usuario.apellidoMaterno}</td>
+                          <td className='p-3 text-gray-700'>{usuario.correo}</td>
+                          <td className='p-3 text-gray-700'>{usuario.rol}</td>
+                          <td className='p-3 text-gray-700'>{usuario.activo ? "Activo" : "Inactivo"}</td>
+                          <td className='p-3 text-center'>
                             <button className="bg-dark-purple p-2 rounded-lg text-white text-sm"
                                     onClick={
                                       () => {
-                                        navigate(`/cliente/${cliente.id}`)
+                                        navigate(`/usuario/${usuario.id}`)
                                       }
                                     }
                             >
@@ -88,8 +88,7 @@ export function ClientesPage() {
                         </tr>
                     )))
                 : (<tr>
-                  <td>Aún no existen valores para esta tabla.</td>
-                </tr>)
+                  <td>Aún no existen valores para esta tabla.</td></tr>)
             }
             </tbody>
           </table>
@@ -115,4 +114,3 @@ export function ClientesPage() {
       </div>
   )
 }
-
