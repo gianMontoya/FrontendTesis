@@ -330,7 +330,7 @@ export function ComprasPage( {setUser}) {
             >
               Importar
             </button>
-            {isLoading && <img src="/src/assets/Cargando.gif" alt="/src/assets/Cargando.gif"/>}
+            {isLoading && <img src="/assets/Cargando.gif" alt="/src/assets/Cargando.gif"/>}
           </div>
         </Modal>
       </div>

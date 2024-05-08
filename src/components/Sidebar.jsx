@@ -33,20 +33,20 @@ export function Sidebar({setUser}) {
         } bg-dark-purple vh-100 p-4 pt-8 relative duration-300 h-screen`}
       >
         <img
-          src="/src/assets/control.png"
+          src="/assets/control.png"
           className={`absolute cursor-pointer -right-3 top-9 w-7 border-dark-purple
            border-2 rounded-full  ${!open && "rotate-180"}`}
           onClick={() => setOpen(!open)}
-          alt="/src/assets/control.png"
+          alt="/assets/control.png"
         />
         <div className="flex gap-x-4 items-center cursor-pointer " onClick={() => {
             navigate("/tablero")}}>
           <img
-            src="/src/assets/logo.png"
+            src="/assets/logo.png"
             className={`duration-500 ${
               open && "rotate-[360deg]"
             }`}
-            alt="/src/assets/logo.png"
+            alt="/assets/logo.png"
           />
           <div className="w-full">
             <h1
@@ -68,7 +68,7 @@ export function Sidebar({setUser}) {
                       to = {Menu.link}
                       className = {`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 ${Menu.gap ? "mt-8" : "mt-1"}`}
                   >
-                      <img src={`/src/assets/${Menu.src}.png`} alt={`/src/assets/${Menu.src}.png`}/>
+                      <img src={`/assets/${Menu.src}.png`} alt={`/assets/${Menu.src}.png`}/>
                       <span className={`${!open && "hidden"} origin-left duration-200 font-bold`}>
                           {Menu.title}
                       </span>

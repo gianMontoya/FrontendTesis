@@ -3,7 +3,7 @@ import {pathname} from "../config/config.js";
 
 //ALL
 const insumosApi = axios.create({
-    baseURL: pathname+"api/v1/insumos"
+    baseURL: pathname+"/api/v1/insumos"
 })
 
 export const getAllInsumos = async () =>{
