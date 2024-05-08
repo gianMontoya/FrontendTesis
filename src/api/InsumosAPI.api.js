@@ -1,8 +1,9 @@
 import axios from "axios";
+import {pathname} from "../config/config.js";
 
 //ALL
 const insumosApi = axios.create({
-    baseURL: "http://localhost:8080/api/v1/insumos"
+    baseURL: pathname+"api/v1/insumos"
 })
 
 export const getAllInsumos = async () =>{
@@ -18,6 +19,16 @@ export const getAllInsumos = async () =>{
 export const getAllInsumosActivos = async () =>{
     try {
         const response = await insumosApi.get('/activos');
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching insumos:", error);
+        throw error;
+    }
+}
+
+export const getAllInsumosByNombre = async (nombre) =>{
+    try {
+        const response = await insumosApi.get(`/nombre/${nombre}`);
         return response.data;
     } catch (error) {
         console.error("Error fetching insumos:", error);

@@ -6,7 +6,8 @@ import { toast} from 'react-hot-toast'
 import {createOrUpdateProducto, getProducto, createOrUpdateInsumosProducto} from "../../api/ProductosAPI.api.js";
 import {getAllInsumosActivos} from "../../api/InsumosAPI.api.js";
 
-export function ProductoFormPage() {
+// eslint-disable-next-line react/prop-types
+export function ProductoFormPage({setUser}) {
 
     const navigate = useNavigate()
     const params = useParams()
@@ -93,7 +94,7 @@ export function ProductoFormPage() {
 
     return (
         <div className="flex">
-            <Sidebar/>
+            <Sidebar setUser={setUser}/>
             <div className="w-4/6 mx-auto">
                 <div className="mt-10 mb-0 font-extrabold text-4xl">
                     {(params.id?"Editar ":"Crear ")+"Producto"}

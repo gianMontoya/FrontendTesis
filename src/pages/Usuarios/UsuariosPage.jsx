@@ -1,9 +1,11 @@
 import {Sidebar} from '../../components/Sidebar.jsx'
 import {useEffect, useState} from "react"
 import {useNavigate} from "react-router-dom"
-import {getAllUsuarios} from "../../api/UsuariosAPI.api.js";
+import {getAllUsuarios, getAllUsuariosByName} from "../../api/UsuariosAPI.api.js";
 
-export function UsuariosPage() {
+
+// eslint-disable-next-line react/prop-types
+export function UsuariosPage({setUser}) {
   const [usuarios, setUsuarios] = useState([])
   const navigate = useNavigate()
   const itemsPerPage = 5; // Number of items per page
@@ -36,10 +38,31 @@ export function UsuariosPage() {
     fetchData();
   }, []);
 
+  const handleQuerySearch = async (e)=>{
+    const q = e.target.value;
+    if(q===""){
+      const fetchData = async () => {
+        const data = await getAllUsuarios();
+        setUsuarios(data);
+      };
+      fetchData();
+    }else{
+      const fetchData = async () => {
+        const data = await getAllUsuariosByName(q);
+        setUsuarios(data);
+      };
+      fetchData();
+    }
+    // eslint-disable-next-line
+
+  }
+
+
   return (
       <div className="flex">
-        <Sidebar/>
+        <Sidebar setUser={setUser}/>
         <div className="w-4/6 mx-auto">
+
           <div className="mt-10 mb-10 font-extrabold text-3xl">
             Usuarios
           </div>
@@ -54,6 +77,19 @@ export function UsuariosPage() {
               Crear
             </button>
           </div>
+          <div className="flex">
+            <div className="flex w-full">
+              <span className="text-center self-center mr-2">Filtro:</span>
+              <input
+                  id="input-compra-date-from"
+                  className="bg-zinc-100 text-sm p-2 w-2/6 border border-stone-500 block rounded-lg placeholder:italic placeholder:text-zinc"
+                  type="text"
+                  placeholder="Buscar por Nombre o Apellido"
+                  onChange={handleQuerySearch}
+              />
+            </div>
+          </div>
+
           <table className="w-full mt-4">
             <thead className="bg-grat-50 border-b-2 border-gray-200">
             <tr>
@@ -70,7 +106,7 @@ export function UsuariosPage() {
                     currentItems.map((usuario, index) => (
                         <tr key={index} className="bg-zinc-100 p-3  rounded-lg odd:bg-white even:bg-slate-50">
                           <td className='p-3 text-gray-700'>{usuario.id}</td>
-                          <td className='p-3 text-gray-700'>{usuario.nombres+ " "+ usuario.apellidoPaterno + " "+ usuario.apellidoMaterno}</td>
+                          <td className='p-3 text-gray-700'>{usuario.nombres + " " + usuario.apellidoPaterno + " " + usuario.apellidoMaterno}</td>
                           <td className='p-3 text-gray-700'>{usuario.correo}</td>
                           <td className='p-3 text-gray-700'>{usuario.rol}</td>
                           <td className='p-3 text-gray-700'>{usuario.activo ? "Activo" : "Inactivo"}</td>
@@ -88,13 +124,14 @@ export function UsuariosPage() {
                         </tr>
                     )))
                 : (<tr>
-                  <td>Aún no existen valores para esta tabla.</td></tr>)
+                  <td>Aún no existen valores para esta tabla.</td>
+                </tr>)
             }
             </tbody>
           </table>
           <div className="mt-4 flex justify-evenly items-center">
             <button
-                className={currentPage !== 1?"bg-blue-400 p-2 rounded-md":"bg-gray-200 p-2 rounded-md"}
+                className={currentPage !== 1 ? "bg-blue-400 p-2 rounded-md" : "bg-gray-200 p-2 rounded-md"}
                 onClick={() => handleClick('prev')}
                 disabled={currentPage === 1}
             >
@@ -103,7 +140,7 @@ export function UsuariosPage() {
 
             <span> Página {currentPage} de {totalPages} </span>
             <button
-                className={(currentPage !== totalPages && totalPages>1)?"bg-blue-400 p-2 rounded-md":"bg-gray-200 p-2 rounded-md"}
+                className={(currentPage !== totalPages && totalPages > 1) ? "bg-blue-400 p-2 rounded-md" : "bg-gray-200 p-2 rounded-md"}
                 onClick={() => handleClick('next')}
                 disabled={currentPage === totalPages}
             >

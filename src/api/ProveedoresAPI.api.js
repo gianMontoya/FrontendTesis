@@ -1,13 +1,24 @@
 import axios from "axios";
+import {pathname} from "../config/config.js";
 
 //ALL
 const proveedoresApi = axios.create({
-  baseURL: "http://localhost:8080/api/v1/proveedores"
+  baseURL: pathname+"/api/v1/proveedores"
 })
 
 export const getAllProveedores= async () =>{
   try {
     const response = await proveedoresApi.get('');
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching proveedores:", error);
+    throw error;
+  }
+}
+
+export const getAllProveedoresByNombre= async (nombre) =>{
+  try {
+    const response = await proveedoresApi.get(`/nombre/${nombre}`);
     return response.data;
   } catch (error) {
     console.error("Error fetching proveedores:", error);

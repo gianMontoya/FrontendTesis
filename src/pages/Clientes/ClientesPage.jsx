@@ -1,9 +1,10 @@
 import { Sidebar } from '../../components/Sidebar.jsx'
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {getAllClientes} from "../../api/ClientesAPI.api.js";
+import {getAllClientes, getAllClientesByName} from "../../api/ClientesAPI.api.js";
 
-export function ClientesPage() {
+// eslint-disable-next-line react/prop-types
+export function ClientesPage({setUser}) {
   const [clientes, setClientes] = useState([])
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -38,9 +39,28 @@ export function ClientesPage() {
     fetchData();
   }, []);
 
+  const handleQuerySearch = async (e)=>{
+    const q = e.target.value;
+    if(q===""){
+      const fetchData = async () => {
+        const data = await getAllClientes();
+        setClientes(data);
+      };
+      fetchData();
+    }else{
+      const fetchData = async () => {
+        const data = await getAllClientesByName(q);
+        setClientes(data);
+      };
+      fetchData();
+    }
+    // eslint-disable-next-line
+
+  }
+
   return (
       <div className="flex">
-        <Sidebar/>
+        <Sidebar setUser={setUser}/>
         <div className="w-4/6 mx-auto">
           <div className="mt-10 mb-10 font-extrabold text-3xl">
             Clientes
@@ -56,6 +76,19 @@ export function ClientesPage() {
               Crear
             </button>
           </div>
+          <div className="flex">
+            <div className="flex w-full">
+              <span className="text-center self-center mr-2">Filtro:</span>
+              <input
+                  id="input-compra-date-from"
+                  className="bg-zinc-100 text-sm p-2 w-2/6 border border-stone-500 block rounded-lg placeholder:italic placeholder:text-zinc"
+                  type="text"
+                  placeholder="Buscar por Nombre de Cliente"
+                  onChange={handleQuerySearch}
+              />
+            </div>
+          </div>
+
           <table className="w-full mt-4">
             <thead className="bg-grat-50 border-b-2 border-gray-200">
             <tr>
@@ -67,13 +100,13 @@ export function ClientesPage() {
             </tr>
             </thead>
             <tbody>
-            {currentItems.length > 0? (
+            {currentItems.length > 0 ? (
                     currentItems.map((cliente, index) => (
                         <tr key={index} className="bg-zinc-100 p-3  rounded-lg odd:bg-white even:bg-slate-50">
                           <td className='p-3 text-gray-700'>{cliente.id}</td>
                           <td className='p-3 text-gray-700'>{cliente.nombreCliente}</td>
-                          <td className='p-3 text-gray-700'>{cliente.nombreContacto + " - " + cliente.numeroContacto + " - "+ cliente.correoContacto}</td>
-                          <td className='p-3 text-gray-700'>{cliente.activo?"Activo":"Inactivo"}</td>
+                          <td className='p-3 text-gray-700'>{cliente.nombreContacto + " - " + cliente.numeroContacto + " - " + cliente.correoContacto}</td>
+                          <td className='p-3 text-gray-700'>{cliente.activo ? "Activo" : "Inactivo"}</td>
                           <td className='p-2'>
                             <button className="bg-dark-purple p-2 rounded-lg text-white text-sm"
                                     onClick={
@@ -95,7 +128,7 @@ export function ClientesPage() {
           </table>
           <div className="mt-4 flex justify-evenly items-center">
             <button
-                className={currentPage !== 1?"bg-blue-400 p-2 rounded-md":"bg-gray-200 p-2 rounded-md"}
+                className={currentPage !== 1 ? "bg-blue-400 p-2 rounded-md" : "bg-gray-200 p-2 rounded-md"}
                 onClick={() => handleClick('prev')}
                 disabled={currentPage === 1}
             >
@@ -104,7 +137,7 @@ export function ClientesPage() {
 
             <span> Página {currentPage} de {totalPages} </span>
             <button
-                className={(currentPage !== totalPages && totalPages>1)?"bg-blue-400 p-2 rounded-md":"bg-gray-200 p-2 rounded-md"}
+                className={(currentPage !== totalPages && totalPages > 1) ? "bg-blue-400 p-2 rounded-md" : "bg-gray-200 p-2 rounded-md"}
                 onClick={() => handleClick('next')}
                 disabled={currentPage === totalPages}
             >

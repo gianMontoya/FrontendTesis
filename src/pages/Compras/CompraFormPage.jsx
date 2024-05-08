@@ -7,7 +7,8 @@ import {getAllInsumos} from "../../api/InsumosAPI.api.js";
 import {toast} from "react-hot-toast";
 import {createLineaOrdenCompra, createOrUpdateCompras} from "../../api/ComprasAPI.api.js";
 
-export function CompraFormPage(){
+// eslint-disable-next-line react/prop-types
+export function CompraFormPage({setUser}){
   const navigate = useNavigate();
   // const params = useParams();
   const {handleSubmit} = useForm()
@@ -176,7 +177,7 @@ export function CompraFormPage(){
 
   return(
       <div className="flex">
-        <Sidebar/>
+        <Sidebar setUser={setUser}/>
         <div className="w-4/6 mx-auto">
           <div className="mt-10 mb-10 font-extrabold text-3xl">
             Nueva Compra

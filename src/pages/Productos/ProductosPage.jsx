@@ -1,9 +1,10 @@
 import { Sidebar } from '../../components/Sidebar.jsx'
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {getAllProductos} from "../../api/ProductosAPI.api.js";
+import {getAllProductos, getProductoByNombre} from "../../api/ProductosAPI.api.js";
 
-export function ProductosPage() {
+// eslint-disable-next-line react/prop-types
+export function ProductosPage({setUser}) {
     const navigate = useNavigate()
     const [productos, setProductos] = useState([])
     const [currentPage, setCurrentPage] = useState(1);
@@ -34,10 +35,28 @@ export function ProductosPage() {
         fetchData();
     }, []);
 
+    const handleQuerySearch = async (e)=>{
+        const q = e.target.value;
+        if(q===""){
+            const fetchData = async () => {
+                const data = await getAllProductos();
+                setProductos(data);
+            };
+            fetchData();
+        }else{
+            const fetchData = async () => {
+                const data = await getProductoByNombre(q);
+                setProductos(data);
+            };
+            fetchData();
+        }
+        // eslint-disable-next-line
+
+    }
 
     return (
         <div className="flex">
-            <Sidebar/>
+            <Sidebar setUser={setUser}/>
             <div className="w-4/6 mx-auto">
                 <div className="mt-10 mb-10 font-extrabold text-3xl">
                     Productos
@@ -53,7 +72,18 @@ export function ProductosPage() {
                         Crear
                     </button>
                 </div>
-
+                <div className="flex">
+                    <div className="flex w-full">
+                        <span className="text-center self-center mr-2">Filtro:</span>
+                        <input
+                            id="input-compra-date-from"
+                            className="bg-zinc-100 text-sm p-2 w-2/6 border border-stone-500 block rounded-lg placeholder:italic placeholder:text-zinc"
+                            type="text"
+                            placeholder="Buscar por Nombre de Producto"
+                            onChange={handleQuerySearch}
+                        />
+                    </div>
+                </div>
                 <table className="w-full">
                     <thead className="bg-grat-50 border-b-2 border-gray-200">
                     <tr>
@@ -65,34 +95,35 @@ export function ProductosPage() {
                     </tr>
                     </thead>
                     <tbody>
-                    {currentItems.length > 0? (
-                        currentItems.map((producto, index) => (
-                            <tr key={index} className="bg-zinc-100 p-3  rounded-lg odd:bg-white even:bg-slate-50">
-                                <td className='p-3 text-gray-700'>{producto.id}</td>
-                                <td className='p-3 text-gray-700'>{producto.nombreProducto}</td>
-                                <td className='p-3 text-gray-700'>{producto.pesoRollo}</td>
-                                <td className='p-3 text-gray-700'>{producto.activo ? "Activo" : "Inactivo"}</td>
-                                <td className='p-3'>
-                                    <button className="bg-dark-purple p-2 rounded-lg text-white text-sm"
-                                            onClick={
-                                                () => {
-                                                    navigate(`/producto/${producto.id}`)
+                    {currentItems.length > 0 ? (
+                            currentItems.map((producto, index) => (
+                                <tr key={index} className="bg-zinc-100 p-3  rounded-lg odd:bg-white even:bg-slate-50">
+                                    <td className='p-3 text-gray-700'>{producto.id}</td>
+                                    <td className='p-3 text-gray-700'>{producto.nombreProducto}</td>
+                                    <td className='p-3 text-gray-700'>{producto.pesoRollo}</td>
+                                    <td className='p-3 text-gray-700'>{producto.activo ? "Activo" : "Inactivo"}</td>
+                                    <td className='p-3'>
+                                        <button className="bg-dark-purple p-2 rounded-lg text-white text-sm"
+                                                onClick={
+                                                    () => {
+                                                        navigate(`/producto/${producto.id}`)
+                                                    }
                                                 }
-                                            }
-                                    >
-                                        Editar
-                                    </button>
-                                </td>
-                            </tr>
-                        )))
+                                        >
+                                            Editar
+                                        </button>
+                                    </td>
+                                </tr>
+                            )))
                         : (<tr>
-                            <td>Aún no existen valores para esta tabla.</td></tr>)
+                            <td>Aún no existen valores para esta tabla.</td>
+                        </tr>)
                     }
                     </tbody>
                 </table>
                 <div className="mt-4 flex justify-evenly items-center">
                     <button
-                        className={currentPage !== 1?"bg-blue-400 p-2 rounded-md":"bg-gray-200 p-2 rounded-md"}
+                        className={currentPage !== 1 ? "bg-blue-400 p-2 rounded-md" : "bg-gray-200 p-2 rounded-md"}
                         onClick={() => handleClick('prev')}
                         disabled={currentPage === 1}
                     >
@@ -100,7 +131,7 @@ export function ProductosPage() {
                     </button>
                     <span> Página {currentPage} de {totalPages} </span>
                     <button
-                        className={(currentPage !== totalPages && totalPages>1)?"bg-blue-400 p-2 rounded-md":"bg-gray-200 p-2 rounded-md"}
+                        className={(currentPage !== totalPages && totalPages > 1) ? "bg-blue-400 p-2 rounded-md" : "bg-gray-200 p-2 rounded-md"}
                         onClick={() => handleClick('next')}
                         disabled={currentPage === totalPages}
                     >

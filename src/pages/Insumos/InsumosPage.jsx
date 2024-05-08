@@ -1,9 +1,10 @@
 import {Sidebar} from '../../components/Sidebar.jsx'
-import {getAllInsumos} from '../../api/InsumosAPI.api.js'
+import {getAllInsumos, getAllInsumosByNombre} from '../../api/InsumosAPI.api.js'
 import {useEffect, useState} from "react"
 import {useNavigate} from "react-router-dom"
 
-export function InsumosPage() {
+// eslint-disable-next-line react/prop-types
+export function InsumosPage({setUser}) {
   const [insumos, setInsumos] = useState([])
   const navigate = useNavigate()
   const itemsPerPage = 5; // Number of items per page
@@ -37,9 +38,28 @@ export function InsumosPage() {
     fetchData();
   }, []);
 
+  const handleQuerySearch = async (e)=>{
+    const q = e.target.value;
+    if(q===""){
+      const fetchData = async () => {
+        const data = await getAllInsumos();
+        setInsumos(data);
+      };
+      fetchData();
+    }else{
+      const fetchData = async () => {
+        const data = await getAllInsumosByNombre(q);
+        setInsumos(data);
+      };
+      fetchData();
+    }
+    // eslint-disable-next-line
+
+  }
+
   return (
       <div className="flex">
-        <Sidebar/>
+        <Sidebar setUser={setUser}/>
         <div className="w-4/6 mx-auto">
           <div className="mt-10 mb-10 font-extrabold text-3xl">
             Insumos
@@ -54,6 +74,18 @@ export function InsumosPage() {
             >
               Crear
             </button>
+          </div>
+          <div className="flex">
+            <div className="flex w-full">
+              <span className="text-center self-center mr-2">Filtro:</span>
+              <input
+                  id="input-compra-date-from"
+                  className="bg-zinc-100 text-sm p-2 w-2/6 border border-stone-500 block rounded-lg placeholder:italic placeholder:text-zinc"
+                  type="text"
+                  placeholder="Buscar por Nombre de Insumo"
+                  onChange={handleQuerySearch}
+              />
+            </div>
           </div>
           <table className="w-full mt-4">
             <thead className="bg-grat-50 border-b-2 border-gray-200">
@@ -72,7 +104,7 @@ export function InsumosPage() {
                           <td className='p-3 text-gray-700'>{insumo.id}</td>
                           <td className='p-3 text-gray-700'>{insumo.nombreInsumo}</td>
                           <td className='p-3 text-gray-700'>{insumo.pesoPaquete}</td>
-                          <td className='p-3 text-gray-700'>{insumo.activo?"Activo":"Inactivo"}</td>
+                          <td className='p-3 text-gray-700'>{insumo.activo ? "Activo" : "Inactivo"}</td>
                           <td className='p-3'>
                             <button className="bg-dark-purple p-2 rounded-lg text-white text-sm"
                                     onClick={
@@ -86,13 +118,15 @@ export function InsumosPage() {
                           </td>
                         </tr>
                     )))
-                : (<tr><td>Aún no existen valores para esta tabla.</td></tr>)
+                : (<tr>
+                  <td>Aún no existen valores para esta tabla.</td>
+                </tr>)
             }
             </tbody>
           </table>
           <div className="mt-4 flex justify-evenly items-center">
             <button
-                className={currentPage !== 1?"bg-blue-400 p-2 rounded-md":"bg-gray-200 p-2 rounded-md"}
+                className={currentPage !== 1 ? "bg-blue-400 p-2 rounded-md" : "bg-gray-200 p-2 rounded-md"}
                 onClick={() => handleClick('prev')}
                 disabled={currentPage === 1}
             >
@@ -101,14 +135,14 @@ export function InsumosPage() {
 
             <span> Página {currentPage} de {totalPages} </span>
             <button
-                className={(currentPage !== totalPages && totalPages>1)?"bg-blue-400 p-2 rounded-md":"bg-gray-200 p-2 rounded-md"}
+                className={(currentPage !== totalPages && totalPages > 1) ? "bg-blue-400 p-2 rounded-md" : "bg-gray-200 p-2 rounded-md"}
                 onClick={() => handleClick('next')}
                 disabled={currentPage === totalPages}
             >
               {">>"}
             </button>
           </div>
+        </div>
       </div>
-</div>
   )
 }

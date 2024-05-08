@@ -1,12 +1,13 @@
 import axios from "axios";
+import {pathname} from "../config/config.js";
 
 //ALL
 const comprasApi = axios.create({
-  baseURL: "http://localhost:8080/api/v1/compras"
+  baseURL: pathname+"/api/v1/compras"
 })
 
 const lineasCompraApi = axios.create({
-  baseURL: "http://localhost:8080/api/v1/linea-orden-compra"
+  baseURL: pathname+"/api/v1/linea-orden-compra"
 })
 
 export const getAllCompras= async () =>{

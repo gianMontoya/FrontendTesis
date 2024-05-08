@@ -10,15 +10,18 @@ import {
 import Modal from "../../components/Modal.jsx";
 import XLSX from 'xlsx';
 import {toast} from "react-hot-toast";
+import {CSVLink} from "react-csv";
 
-export function ComprasPage() {
+// eslint-disable-next-line react/prop-types
+export function ComprasPage( {setUser}) {
   const [compras, setCompras] = useState([])
   const [currentPage, setCurrentPage] = useState(1);
   const [showModal, setShowModal] = useState(false)
   const [jsonData, setJsonData] = useState([])
   const [isLoading, setIsLoading] = useState(false)
+  const [cancelFilter, setCancelFilter] = useState(false)
   const navigate = useNavigate()
-  const itemsPerPage = 10; // Number of items per page
+  const itemsPerPage = 8; // Number of items per page
   const totalPages = Math.ceil(compras.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -146,7 +149,7 @@ export function ComprasPage() {
 
     // eslint-disable-next-line
     fetchData();
-    document.getElementById('input-compra-date-from').setAttribute('value', today);
+    document.getElementById('input-compra-date-from').setAttribute('value', "2015-01-01");
     document.getElementById('input-compra-date-to').setAttribute('value', today);
     //eslint-disable-next-line
   }, []);
@@ -154,6 +157,7 @@ export function ComprasPage() {
   const handleDateFilterChange = async ()=>{
     const inputDateFrom = document.getElementById('input-compra-date-from');
     const inputDateTo = document.getElementById('input-compra-date-to');
+    setCancelFilter(true)
     if (inputDateFrom.value>inputDateTo.value){
       toast.error(`La fecha Inicial debe ser mayor a la fecha Final`,{
         position: "top-right",
@@ -173,17 +177,40 @@ export function ComprasPage() {
     fetchData();
   }
 
+  const handleCancelFilter = async ()=>{
+
+    const inputDateFrom = document.getElementById('input-compra-date-from');
+    inputDateFrom.value = "2015-01-01";
+    const inputDateTo = document.getElementById('input-compra-date-to');
+    inputDateTo.value = today;
+    async function loadTasks() {
+      return await getAllCompras();
+    }
+
+    const fetchData = async () => {
+      const data = await loadTasks();
+      setCompras(data);
+    };
+    // eslint-disable-next-line
+    fetchData();
+    setCancelFilter(false)
+  }
 
   return (
       <div className="flex">
-        <Sidebar/>
+        <Sidebar setUser={setUser}/>
         <div className="w-4/6 mx-auto">
           <div className="w-full">
             <div className="mt-10 mb-10 font-extrabold text-3xl">
               Compras
             </div>
             <div className="flex justify-end">
-              <button className="bg-dark-purple text-white p-2 rounded-lg w-1/6"
+              <CSVLink data={compras} className="w-1/6" filename={"compras-exp-"+today}>
+                <button className="bg-dark-purple text-white p-2 rounded-lg w-full">
+                  Exportar Compras
+                </button>
+              </CSVLink>
+              <button className="bg-dark-purple text-white p-2 rounded-lg w-1/6 ml-2"
                       onClick={() => setShowModal(true)}
               >
                 Importar Compras
@@ -198,7 +225,8 @@ export function ComprasPage() {
                 Nueva Compra
               </button>
             </div>
-            <div className="flex">
+
+            <div className="flex mt-2">
               <div className="flex">
                 <span className="text-center self-center mr-2">Desde:</span>
                 <input
@@ -217,14 +245,21 @@ export function ComprasPage() {
                     onChange={handleDateFilterChange}
                 />
               </div>
+              { cancelFilter &&
+                <button className="bg-dark-purple text-white p-2 rounded-lg w-1/12 ml-2"
+                        onClick={handleCancelFilter}>
+                  Cancelar
+                </button>
+              }
+
             </div>
 
           </div>
 
 
-          <div className="min-h-[572px]">
+          <div className="min-h-[500px]">
             <table className="w-full mt-4">
-              <thead className="bg-grat-50 border-b-2 border-gray-200">
+            <thead className="bg-grat-50 border-b-2 border-gray-200">
               <tr>
                 <th className='p-3 text-l font-semibold tracking-wide text-left'>ID</th>
                 <th className='p-3 text-l font-semibold tracking-wide text-left'>Proveedor</th>

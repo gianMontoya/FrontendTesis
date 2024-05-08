@@ -3,16 +3,21 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useForm} from "react-hook-form";
 import {useEffect, useState} from "react";
 import {toast} from "react-hot-toast";
-import {createOrUpdateUsuario, getAllRoles, getUsuario} from "../../api/UsuariosAPI.api.js";
+import {createOrUpdateUsuario, getAllRoles, getUsuario, savePassword} from "../../api/UsuariosAPI.api.js";
+import Modal from "../../components/Modal.jsx";
 
-export function UsuarioFormPage() {
+// eslint-disable-next-line react/prop-types
+export function UsuarioFormPage({setUser}) {
 
   const navigate = useNavigate()
   const params = useParams()
   const {register, handleSubmit, formState:{errors}, setValue} = useForm()
   const [active, setActive] = useState(false)
   const [roles, setRoles] = useState([])
+  const [usuario, setUsuario] = useState({})
   const [rolSelected, setRolSelected] = useState(0)
+  const [showModal, setShowModal] = useState(false)
+
   const onSubmit = handleSubmit(async data=>{
     data = {...data, activo:active, idRol: rolSelected}
     if(params.id){
@@ -48,6 +53,7 @@ export function UsuarioFormPage() {
         setValue('correo', data.correo)
         setValue('numeroCelular', data.numeroCelular)
         setValue('contrasena', data.contrasena)
+        setUsuario(data)
         setActive(data.activo)
         setRolSelected(data.idRol)
       }
@@ -66,13 +72,31 @@ export function UsuarioFormPage() {
     setRolSelected(selectedId);
   };
 
+  const changePassword =async (event) => {
+    event.preventDefault();
+    const pass = event.target.children[1].children[1].value;
+
+    await savePassword({...usuario, contrasena:pass})
+    setShowModal(false)
+    toast.success('Contraseña modificada de forma correcta',{
+      position: "top-right",
+      style: {
+        background:"#101010",
+        color: "#fff"
+      }
+    })
+  }
+
   return (
       <div className="flex">
-        <Sidebar/>
+        <Sidebar setUser={setUser}/>
         <div className="w-4/6 mx-auto">
           <div className="mt-10 mb-10 font-extrabold text-3xl">
-            {(params.id?"Editar ":"Crear ") + "Usuario"}
+            {(params.id ? "Editar " : "Crear ") + "Usuario"}
           </div>
+          {params.id && <div className="flex justify-end mt-8">
+            <button className="bg-slate-400 p-3 w-1/6 rounded-lg block text-white" onClick={()=>{setShowModal(true)}}>Cambiar Contraseña</button>
+          </div>}
           <form onSubmit={onSubmit}>
             <div className="grid grid-cols-2">
 
@@ -116,13 +140,23 @@ export function UsuarioFormPage() {
                     <span className="text-red-500 text-xs">*Obligatorio</span>}
               </label>
 
+              {!params.id &&
+                <label className="block text-zinc-500 mt-5">Contraseña
+                  <input
+                      className="bg-zinc-100 text-sm p-2 w-4/6 border border-stone-500 block rounded-lg mt-3 placeholder:italic placeholder:text-zinc"
+                      type="password"
+                      {...register("contrasena", {required: true})}/> {errors.contrasena &&
+                      <span className="text-red-500 text-xs">*Obligatorio</span>}
+                </label>
+              }
+
               <label className="block text-zinc-500 mt-6">Rol
                 <select
                     className="bg-zinc-100 text-sm p-2 w-2/6 border border-stone-500 block rounded-lg placeholder:italic placeholder:text-zinc"
                     onChange={handleSelectedRol}
                 >
                   {roles.map((item, index) => (
-                      <option key={index} value={item.id} selected={item.id===rolSelected}>
+                      <option key={index} value={item.id} selected={item.id === rolSelected}>
                         {item.nombreRol}
                       </option>
                   ))}
@@ -137,13 +171,37 @@ export function UsuarioFormPage() {
               </label>
 
             </div>
-
             <div className="flex justify-center mt-8">
               <button className="bg-dark-purple p-3 w-1/6 rounded-lg block text-white">Guardar</button>
             </div>
           </form>
         </div>
-
+        <Modal showModal={showModal} setShowModal={setShowModal}>
+          <h2 className="text-2xl font-bold mb-5">Cambiar contraseña</h2>
+          <div>
+            <form onSubmit={changePassword}>
+              <input
+                  type="text"
+                  name="username"
+                  autoComplete="username"
+                  style={{display: 'none'}}
+              />
+              <div className="mb-2 w-[300px]">
+                <label className="block text-sm font-medium text-gray-700 mt-4 mb-2">Contraseña</label>
+                <input
+                    type="password"
+                    className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:dark-purple"
+                    autoComplete="current-password"
+                />
+              </div>
+              <button className="bg-dark-purple p-2 rounded-lg text-white text-sm"
+                      type="submit"
+              >
+                Guardar
+              </button>
+            </form>
+          </div>
+        </Modal>
       </div>
   )
 }

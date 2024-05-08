@@ -11,14 +11,17 @@ import {
   getAllVentasFilterDate
 } from "../../api/VentasAPI.api.js";
 
-export function VentasPage() {
+// eslint-disable-next-line react/prop-types
+export function VentasPage({setUser}) {
   const [ventas, setVentas] = useState([])
   const [currentPage, setCurrentPage] = useState(1);
   const [showModal, setShowModal] = useState(false)
   const [jsonData, setJsonData] = useState([])
   const [isLoading, setIsLoading] = useState(false)
+  const [cancelFilter, setCancelFilter] = useState(false)
+
   const navigate = useNavigate()
-  const itemsPerPage = 10; // Number of items per page
+  const itemsPerPage = 8; // Number of items per page
   const totalPages = Math.ceil(ventas.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -147,6 +150,25 @@ export function VentasPage() {
     reader.readAsBinaryString(file);
   }
 
+  const handleCancelFilter = async ()=>{
+
+    const inputDateFrom = document.getElementById('input-venta-date-from');
+    inputDateFrom.value = "2015-01-01";
+    const inputDateTo = document.getElementById('input-venta-date-to');
+    inputDateTo.value = today;
+    async function loadTasks() {
+      return await getAllVentas();
+    }
+
+    const fetchData = async () => {
+      const data = await loadTasks();
+      setVentas(data);
+    };
+    // eslint-disable-next-line
+    fetchData();
+    setCancelFilter(false)
+  }
+
   useEffect(() => {
     async function loadTasks() {
       return await getAllVentas();
@@ -159,7 +181,7 @@ export function VentasPage() {
 
     // eslint-disable-next-line
     fetchData();
-    document.getElementById('input-venta-date-from').setAttribute('value', today);
+    document.getElementById('input-venta-date-from').setAttribute('value', "2015-01-01");
     document.getElementById('input-venta-date-to').setAttribute('value', today);
     //eslint-disable-next-line
   }, []);
@@ -167,6 +189,7 @@ export function VentasPage() {
   const handleDateFilterChange = async ()=>{
     const inputDateFrom = document.getElementById('input-venta-date-from');
     const inputDateTo = document.getElementById('input-venta-date-to');
+    setCancelFilter(true)
     if (inputDateFrom.value>inputDateTo.value){
       toast.error(`La fecha Inicial debe ser mayor a la fecha Final`,{
         position: "top-right",
@@ -189,7 +212,7 @@ export function VentasPage() {
 
   return (
       <div className="flex">
-        <Sidebar/>
+        <Sidebar setUser={setUser}/>
         <div className="w-4/6 mx-auto">
           <div className="w-full">
             <div className="mt-10 mb-10 font-extrabold text-3xl">
@@ -221,6 +244,12 @@ export function VentasPage() {
                     onChange={handleDateFilterChange}
                 />
               </div>
+              {cancelFilter &&
+              <button className="bg-dark-purple text-white p-2 rounded-lg w-1/12 ml-2"
+                      onClick={handleCancelFilter}>
+                Cancelar
+              </button>
+              }
             </div>
 
           </div>

@@ -3,7 +3,8 @@ import {Sidebar} from "../../components/Sidebar.jsx";
 import {useEffect, useState} from "react";
 import {getCompra, getLineaOrdenCompra} from "../../api/ComprasAPI.api.js";
 
-export function ComprasVisualizerPage(){
+// eslint-disable-next-line react/prop-types
+export function ComprasVisualizerPage({setUser}){
   const params = useParams();
   const [compra, setCompra] = useState({})
   const [lineasOrdenCompra, setLineasOrdenCompra] = useState([])
@@ -41,17 +42,17 @@ export function ComprasVisualizerPage(){
 
   return(
       <div className="flex">
-        <Sidebar/>
+        <Sidebar setUser={setUser}/>
         <div className="w-4/6 mx-auto">
           <div className="mt-10 mb-10 font-extrabold text-3xl">
             Información Compra
           </div>
           <form id="form-venta">
-            <div className="flex justify-end">
-              <button className="bg-dark-purple p-3 w-1/6 rounded-lg block mt-0 text-white">
-                Imprimir Orden
-              </button>
-            </div>
+            {/*<div className="flex justify-end">*/}
+            {/*  <button className="bg-dark-purple p-3 w-1/6 rounded-lg block mt-0 text-white">*/}
+            {/*    Imprimir Orden*/}
+            {/*  </button>*/}
+            {/*</div>*/}
 
             <label className="block text-zinc-500 mt-0">Proveedor
               <input

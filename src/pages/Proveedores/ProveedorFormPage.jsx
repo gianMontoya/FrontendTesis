@@ -5,7 +5,8 @@ import {useEffect, useState} from "react";
 import {createOrUpdateProveedor, getProveedor} from "../../api/ProveedoresAPI.api.js";
 import {toast} from "react-hot-toast";
 
-export function ProveedorFormPage() {
+// eslint-disable-next-line react/prop-types
+export function ProveedorFormPage({setUser}) {
 
   const navigate = useNavigate()
   const params = useParams()
@@ -54,7 +55,7 @@ export function ProveedorFormPage() {
 
   return (
       <div className="flex">
-        <Sidebar/>
+        <Sidebar setUser={setUser}/>
         <div className="w-4/6 mx-auto">
           <div className="mt-10 mb-10 font-extrabold text-3xl">
             {(params.id?"Editar ":"Crear ") + "Proveedor"}

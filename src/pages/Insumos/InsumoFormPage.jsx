@@ -5,7 +5,8 @@ import {useEffect, useState} from "react";
 import { toast} from 'react-hot-toast'
 import {createOrUpdateInsumo, getInsumo} from '../../api/InsumosAPI.api.js'
 
-export function InsumoFormPage() {
+// eslint-disable-next-line react/prop-types
+export function InsumoFormPage({setUser}) {
 
     const navigate = useNavigate()
     const params = useParams()
@@ -35,7 +36,7 @@ export function InsumoFormPage() {
         }
       navigate("/insumos")
     })
-    
+
     useEffect(() => {
       async function loadInsumo() {
         if (params.id) {
@@ -53,7 +54,7 @@ export function InsumoFormPage() {
 
     return (
       <div className="flex">
-        <Sidebar/>
+        <Sidebar setUser={setUser}/>
         <div className="w-4/6 mx-auto">
           <div className="mt-10 mb-10 font-extrabold text-3xl">
             {(params.id?"Editar ":"Crear ") + "Insumo"}

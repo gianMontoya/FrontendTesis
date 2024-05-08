@@ -1,13 +1,24 @@
 import axios from "axios";
+import {pathname} from "../config/config.js";
 
 //ALL
 const clientesApi = axios.create({
-  baseURL: "http://localhost:8080/api/v1/clientes"
+  baseURL: pathname+"/api/v1/clientes"
 })
 
 export const getAllClientes= async () =>{
   try {
     const response = await clientesApi.get('');
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching clientes:", error);
+    throw error;
+  }
+}
+
+export const getAllClientesByName= async (name) =>{
+  try {
+    const response = await clientesApi.get(`/nombre/${name}`);
     return response.data;
   } catch (error) {
     console.error("Error fetching clientes:", error);

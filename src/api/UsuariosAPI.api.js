@@ -1,13 +1,24 @@
 import axios from "axios";
+import {pathname} from "../config/config.js";
 
 //ALL
 const usuariosApi = axios.create({
-  baseURL: "http://localhost:8080/api/v1/usuarios"
+  baseURL: pathname+"/api/v1/usuarios"
 })
 
 export const getAllUsuarios = async () =>{
   try {
     const response = await usuariosApi.get('');
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching usuarios:", error);
+    throw error;
+  }
+}
+
+export const getAllUsuariosByName = async (value) =>{
+  try {
+    const response = await usuariosApi.get(`/nombre/${value}`);
     return response.data;
   } catch (error) {
     console.error("Error fetching usuarios:", error);
@@ -27,10 +38,18 @@ export const getAllUsuariosActivos = async () =>{
 
 //ONE
 
+export const login = async(data)=>{
+  return usuariosApi.post(`/login`,data)
+}
+
 export const createOrUpdateUsuario = (id, data) =>{
   if (id>0) data["id"] = id;
   if (data["contrasena"]==null) data["contrasena"] = "";
   return usuariosApi.post('',data);
+}
+
+export const savePassword = (data) =>{
+  return usuariosApi.post('/password',data);
 }
 
 export const getUsuario = (id) =>{
@@ -42,7 +61,7 @@ export const deleteUsuario = (id) =>{
 }
 
 const rolesApi = axios.create({
-  baseURL: "http://localhost:8080/api/v1/roles"
+  baseURL: pathname+"/api/v1/roles"
 })
 
 //ROLES
@@ -55,6 +74,8 @@ export const getAllRoles = async () =>{
     throw error;
   }
 }
+
+
 
 // const permisosApi = axios.create({
 //   baseURL: "http://localhost:8080/api/v1/permisos"
