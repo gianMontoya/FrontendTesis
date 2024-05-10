@@ -38,7 +38,7 @@ function App() {
                         <Security  setUser={setUser} storageKey={"user"} storageRol={"idRol"}/>
                         <Routes>
                               {/*DEFAULT*/}
-                              {<Route path="/" element={<Navigate to="/tablero"/>}/>}
+                              {<Route path="/" element={<Navigate to="/insumos"/>}/>}
 
                               {/*TABLERO*/}
                               {<Route path="/tablero" element={<TableroPage setUser={setUser}/>}/>}
