@@ -44,41 +44,41 @@ function App() {
                               {<Route path="/tablero" element={<TableroPage setUser={setUser}/>}/>}
 
                               {/*COMPRAS*/}
-                              {permits.Admin.includes(idRol) && <Route path="/compras" element={<ComprasPage setUser={setUser}/>}/>}
-                              {permits.Admin.includes(idRol) && <Route path="/compra-create" element={<CompraFormPage setUser={setUser}/>}/>}
-                              {permits.Admin.includes(idRol) && <Route path="/compra/:id" element={<ComprasVisualizerPage setUser={setUser}/>}/>}
+                              {<Route path="/compras" element={<ComprasPage setUser={setUser}/>}/>}
+                              {<Route path="/compra-create" element={<CompraFormPage setUser={setUser}/>}/>}
+                              {<Route path="/compra/:id" element={<ComprasVisualizerPage setUser={setUser}/>}/>}
 
                               {/*PROVEEDORES*/}
-                          {permits.Admin.includes(idRol) && <Route path="/proveedores" element={<ProveedoresPage setUser={setUser}/>}/>}
-                          {permits.Admin.includes(idRol) && <Route path="/proveedor-create" element={<ProveedorFormPage setUser={setUser}/>}/>}
-                          {permits.Admin.includes(idRol) && <Route path="/proveedor/:id" element={<ProveedorFormPage setUser={setUser}/>}/>}
+                              {permits.Admin.includes(idRol) && <Route path="/proveedores" element={<ProveedoresPage setUser={setUser}/>}/>}
+                              {permits.Admin.includes(idRol) && <Route path="/proveedor-create" element={<ProveedorFormPage setUser={setUser}/>}/>}
+                              {permits.Admin.includes(idRol) && <Route path="/proveedor/:id" element={<ProveedorFormPage setUser={setUser}/>}/>}
 
-                              {/*VENTAS*/}
-                          {<Route path="/ventas" element={<VentasPage setUser={setUser}/>}/>}
-                          {<Route path="/venta/:id" element={<VentasVisualizerPage setUser={setUser}/>}/>}
+                                  {/*VENTAS*/}
+                              {permits.Admin.includes(idRol) && <Route path="/ventas" element={<VentasPage setUser={setUser}/>}/>}
+                              {permits.Admin.includes(idRol) && <Route path="/venta/:id" element={<VentasVisualizerPage setUser={setUser}/>}/>}
 
-                              {/*CLIENTES*/}
-                          {<Route path="/clientes" element={<ClientesPage setUser={setUser}/>}/>}
-                          {<Route path="/cliente-create" element={<ClienteFormPage setUser={setUser}/>}/>}
-                          {<Route path="/cliente/:id" element={<ClienteFormPage setUser={setUser}/>}/>}
+                                  {/*CLIENTES*/}
+                              {permits.Admin.includes(idRol) && <Route path="/clientes" element={<ClientesPage setUser={setUser}/>}/>}
+                              {permits.Admin.includes(idRol) && <Route path="/cliente-create" element={<ClienteFormPage setUser={setUser}/>}/>}
+                              {permits.Admin.includes(idRol) && <Route path="/cliente/:id" element={<ClienteFormPage setUser={setUser}/>}/>}
 
-                              {/*PRODUCTOS*/}
-                          {<Route path="/productos" element={<ProductosPage setUser={setUser}/>}/>}
-                          {<Route path="/producto-create" element={<ProductoFormPage setUser={setUser}/>}/>}
-                          {<Route path="/producto/:id" element={<ProductoFormPage setUser={setUser}/>}/>}
+                                  {/*PRODUCTOS*/}
+                              {<Route path="/productos" element={<ProductosPage setUser={setUser}/>}/>}
+                              {<Route path="/producto-create" element={<ProductoFormPage setUser={setUser}/>}/>}
+                              {<Route path="/producto/:id" element={<ProductoFormPage setUser={setUser}/>}/>}
 
-                              {/*INSUMOS*/}
-                          {permits.Admin.includes(idRol) && <Route path="/insumos" element={<InsumosPage setUser={setUser}/>}/>}
-                          {permits.Admin.includes(idRol) && <Route path="/insumo-create" element={<InsumoFormPage setUser={setUser}/>}/>}
-                          {permits.Admin.includes(idRol) && <Route path="/insumo/:id" element={<InsumoFormPage setUser={setUser}/>}/>}
+                                  {/*INSUMOS*/}
+                              {<Route path="/insumos" element={<InsumosPage setUser={setUser}/>}/>}
+                              {<Route path="/insumo-create" element={<InsumoFormPage setUser={setUser}/>}/>}
+                              {<Route path="/insumo/:id" element={<InsumoFormPage setUser={setUser}/>}/>}
 
-                              {/*USUARIOS*/}
-                          {permits.Admin.includes(idRol) && <Route path="/usuarios" element={<UsuariosPage setUser={setUser}/>}/>}
-                          {permits.Admin.includes(idRol) && <Route path="/usuario-create" element={<UsuarioFormPage setUser={setUser}/>}/>}
-                          {permits.Admin.includes(idRol) && <Route path="/usuario/:id" element={<UsuarioFormPage setUser={setUser}/>}/>}
+                                  {/*USUARIOS*/}
+                              {permits.Admin.includes(idRol) && <Route path="/usuarios" element={<UsuariosPage setUser={setUser}/>}/>}
+                              {permits.Admin.includes(idRol) && <Route path="/usuario-create" element={<UsuarioFormPage setUser={setUser}/>}/>}
+                              {permits.Admin.includes(idRol) && <Route path="/usuario/:id" element={<UsuarioFormPage setUser={setUser}/>}/>}
 
-                              {/*ESTIMACION*/}
-                          {permits.Admin.includes(idRol) && <Route path="/estimacion" element={<EstimacionPage setUser={setUser}/>}/>}
+                                  {/*ESTIMACION*/}
+                              {permits.Admin.includes(idRol) && <Route path="/estimacion" element={<EstimacionPage setUser={setUser}/>}/>}
 
                               <Route
                                   path="*"
