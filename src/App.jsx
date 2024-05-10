@@ -49,9 +49,9 @@ function App() {
                               {<Route path="/compra/:id" element={<ComprasVisualizerPage setUser={setUser}/>}/>}
 
                               {/*PROVEEDORES*/}
-                              {permits.Admin.includes(idRol) && <Route path="/proveedores" element={<ProveedoresPage setUser={setUser}/>}/>}
-                              {permits.Admin.includes(idRol) && <Route path="/proveedor-create" element={<ProveedorFormPage setUser={setUser}/>}/>}
-                              {permits.Admin.includes(idRol) && <Route path="/proveedor/:id" element={<ProveedorFormPage setUser={setUser}/>}/>}
+                              {<Route path="/proveedores" element={<ProveedoresPage setUser={setUser}/>}/>}
+                              {<Route path="/proveedor-create" element={<ProveedorFormPage setUser={setUser}/>}/>}
+                              {<Route path="/proveedor/:id" element={<ProveedorFormPage setUser={setUser}/>}/>}
 
                                   {/*VENTAS*/}
                               {permits.Admin.includes(idRol) && <Route path="/ventas" element={<VentasPage setUser={setUser}/>}/>}
@@ -63,9 +63,9 @@ function App() {
                               {permits.Admin.includes(idRol) && <Route path="/cliente/:id" element={<ClienteFormPage setUser={setUser}/>}/>}
 
                                   {/*PRODUCTOS*/}
-                              {<Route path="/productos" element={<ProductosPage setUser={setUser}/>}/>}
-                              {<Route path="/producto-create" element={<ProductoFormPage setUser={setUser}/>}/>}
-                              {<Route path="/producto/:id" element={<ProductoFormPage setUser={setUser}/>}/>}
+                              {permits.Admin.includes(idRol) &&<Route path="/productos" element={<ProductosPage setUser={setUser}/>}/>}
+                              {permits.Admin.includes(idRol) &&<Route path="/producto-create" element={<ProductoFormPage setUser={setUser}/>}/>}
+                              {permits.Admin.includes(idRol) &&<Route path="/producto/:id" element={<ProductoFormPage setUser={setUser}/>}/>}
 
                                   {/*INSUMOS*/}
                               {<Route path="/insumos" element={<InsumosPage setUser={setUser}/>}/>}
