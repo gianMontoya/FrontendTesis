@@ -30,6 +30,18 @@ export const getAllVentasFilterDate= async (from, to) =>{
   }
 }
 
+export const getAllVentasMensualesPorProducto= async (idProd) =>{
+  try {
+    const response = await ventasApi.get(`/mensual/${idProd}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching ventas:", error);
+    throw error;
+  }
+}
+
+
+
 //ONE
 export const createOrUpdateVentas = (id, data) =>{
   if (id>0) data["id"] = id;
@@ -49,3 +61,4 @@ export const createLineaOrdenVenta = (list) =>{
 export const getLineaOrdenVenta = (id) =>{
   return lineasVentaApi.get(`/${id}`);
 }
+

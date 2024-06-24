@@ -50,6 +50,7 @@ export function VentasPage({setUser}) {
   };
 
   const importarVentas = async () =>{
+    console.log(jsonData)
     setIsLoading(true)
     let idOrdenActual = 0
     let arrayLineaOrdenVenta = []
@@ -64,12 +65,12 @@ export function VentasPage({setUser}) {
         let orden ={
           fidCliente: jsonData[i].B,
           fechaCreacion: jsonData[i].D.toLocaleDateString('es-PE', {
-            day: 'numeric',
+            day: '2-digit',
             month: '2-digit',
             year: 'numeric'
           }).toString().split('/').reverse().join('-'),
           fechaVencimiento: jsonData[i].E.toLocaleDateString('es-PE', {
-            day: 'numeric',
+            day: '2-digit',
             month: '2-digit',
             year: 'numeric'
           }).toString().split('/').reverse().join('-'),
@@ -84,7 +85,7 @@ export function VentasPage({setUser}) {
           cantidad: parseFloat(jsonData[i].H),
           precio: parseFloat(jsonData[i].I),
           fechaEntrega: jsonData[i].J.toLocaleDateString('es-PE', {
-            day: 'numeric',
+            day: '2-digit',
             month: '2-digit',
             year: 'numeric'
           }).toString().split('/').reverse().join('-'),
@@ -98,7 +99,7 @@ export function VentasPage({setUser}) {
           cantidad: parseInt(jsonData[i].H),
           precio: parseFloat(jsonData[i].I),
           fechaEntrega: jsonData[i].J.toLocaleDateString('es-PE', {
-            day: 'numeric',
+            day: '2-digit',
             month: '2-digit',
             year: 'numeric'
           }).toString().split('/').reverse().join('-'),
@@ -181,7 +182,7 @@ export function VentasPage({setUser}) {
 
     // eslint-disable-next-line
     fetchData();
-    document.getElementById('input-venta-date-from').setAttribute('value', "2015-01-01");
+    document.getElementById('input-venta-date-from').setAttribute('value', "2009-01-01");
     document.getElementById('input-venta-date-to').setAttribute('value', today);
     //eslint-disable-next-line
   }, []);

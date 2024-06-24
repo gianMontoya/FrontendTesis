@@ -259,14 +259,14 @@ export function ComprasPage( {setUser}) {
 
           <div className="min-h-[500px]">
             <table className="w-full mt-4">
-            <thead className="bg-grat-50 border-b-2 border-gray-200">
-              <tr>
-                <th className='p-3 text-l font-semibold tracking-wide text-left'>ID</th>
-                <th className='p-3 text-l font-semibold tracking-wide text-left'>Proveedor</th>
-                <th className='p-3 text-l font-semibold tracking-wide text-left'>Fecha de Creación</th>
-                <th className='p-3 text-l font-semibold tracking-wide text-left'>Costo Total</th>
-                <th className='p-3 text-l font-semibold tracking-wide text-left'>Acción</th>
-              </tr>
+              <thead className="bg-grat-50 border-b-2 border-gray-200">
+                <tr>
+                  <th className='p-3 text-l font-semibold tracking-wide text-left'>ID</th>
+                  <th className='p-3 text-l font-semibold tracking-wide text-left'>Proveedor</th>
+                  <th className='p-3 text-l font-semibold tracking-wide text-left'>Fecha de Creación</th>
+                  <th className='p-3 text-l font-semibold tracking-wide text-left'>Costo Total</th>
+                  <th className='p-3 text-l font-semibold tracking-wide text-left'>Acción</th>
+                </tr>
               </thead>
               <tbody>
               {currentItems.length > 0 ? (
